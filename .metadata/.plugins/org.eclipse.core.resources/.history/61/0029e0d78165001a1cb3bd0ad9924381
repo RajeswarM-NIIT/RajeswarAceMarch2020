@@ -1,0 +1,13 @@
+package com.ace.model;
+
+public class Vw_Att_Present {
+	private String stid, crsid, stname, regid, crsname, batchid;
+	private int nosessions, presents;
+	public Vw_Att_Present() {
+		// TODO Auto-generated constructor stub
+	}
+	public Vw_Att_Present(String stid, String crsid, String stname, String regid, String crsname, String batchid, int nos, int pres) {
+		
+		// TODO Auto-generated constructor stub
+	}
+}

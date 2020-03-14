@@ -1,0 +1,11 @@
+<nav class="navbar navbar-default container navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+     	<a class="navbar-brand" href="#">eNcore Vista</a>
+	    <ul class="nav navbar-nav">	      
+	      <li><a href="reqFacPage">Faculty</a></li>
+	      <li><a href="reqCHPage">Center Head</a></li>	 
+	    </ul>
+  	</div>
+  </div>
+</nav>

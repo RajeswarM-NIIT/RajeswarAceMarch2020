@@ -1,0 +1,347 @@
+create table Student
+(
+stid char(20) primary key,
+stname char(50)
+)
+
+
+create table Course
+(
+crsid char(20) primary key,
+crsname char(50) unique not null,
+nosessions int
+)
+
+create table Registration
+(
+regid char(20) primary key,
+stid char(20) references Student(stid),
+crsid char(20) references Course(crsid),
+studentstatus char(10)
+)
+
+create table Batch
+(
+batchid char(10) primary key,
+crsid char(20) references Course(crsid),
+status char(10) not null
+)
+
+create table Batch_Schedule_Students
+(
+batchschstid char(20) primary key,
+regid char(20) references Registration(regid),
+crsid char(20)  references Course(crsid),
+bactchid char(10) references Batch(batchid),
+sessionno int,
+batchschedulestudentsstatus char(10)
+)
+
+create table Att_Batch_Schedule_Students
+(
+attid char(20) primary key,
+batchschstid char(20) references Batch_Schedule_Students(batchschstid),
+regid char(20) references Registration(regid),
+crsid char(20)  references Course(crsid),
+bactchid char(10) references Batch(batchid),
+sessionno int,
+attstatus char(10)
+)
+
+Create view Vw_Cource_Batch_Schedule_Registration_Student
+as
+select crs.crsid, crsname, nosessions, bt.batchid, status, batchschstid, sessionno,batchschedulestudentsstatus,
+reg.regid, studentstatus, st.stid, stname
+from course crs join batch bt on crs.crsid=bt.crsid
+join BATCH_SCHEDULE_STUDENTS bss on bt.batchid=bss.bactchid
+join registration reg on bss.regid = reg.regid
+join Student st on reg.stid = st.stid
+
+create view Vw_Course_Batch
+as
+select b.batchid, status, c.crsid, crsname, nosessions
+from batch b join course c on b.crsid = c.crsid
+
+
+create view Vw_Studnet_Att
+as
+select s.stid, stname, attid, r.regid, r.crsid, sessionno, attstatus, batchid
+from student s join registration r
+on s.stid= r.stid
+join ATT_BATCH_SCHEDULE_STUDENTS a on r.regid=a.regid
+
+create view Vw_Att_Pres_Report
+as
+select stname, count(*) from VW_STUDNET_ATT   
+where attstatus='Present'
+group by stname
+
+create view Vw_Att_Abs_Report
+as
+select stname, count(*) from VW_STUDNET_ATT   
+where attstatus='Absent'
+group by stname
+
+
+insert into student values ('S201192100001','Raju');
+insert into student values ('S201192100002','Krishna');
+insert into student values ('S201192100003','Anand');
+insert into student values ('S201192100004','Latha');
+insert into student values ('S201192100005','Madhu');
+insert into student values ('S201192100006','Harsha');
+insert into student values ('S201192100007','Nagaraju');
+insert into student values ('S201192100008','Mahesh');
+insert into student values ('S201192100009','Ramya');
+insert into student values ('S201192100010','Avinash');
+
+insert into student values ('S201192100011','Manohar');
+insert into student values ('S201192100012','Venkatesh');
+insert into student values ('S201192100013','Manju');
+insert into student values ('S201192100014','Aditya');
+insert into student values ('S201192100015','Raghu');
+insert into student values ('S201192100016','Sasank');
+insert into student values ('S201192100017','Amala');
+insert into student values ('S201192100018','Jyothi');
+insert into student values ('S201192100019','Karan');
+insert into student values ('S201192100020','Kiran');
+
+
+
+insert into course values ('CRS00001','PGJS1',50);
+insert into course values ('CRS00002','HTML5',40);
+insert into course values ('CRS00003','C++',35);
+insert into course values ('CRS00004','C',30);
+insert into course values ('CRS00005','C and DS',45);
+insert into course values ('CRS00006','Core Java',80);
+insert into course values ('CRS00007','Advance Java',70);
+insert into course values ('CRS00008','MS Office',30);
+insert into course values ('CRS00009','A+',20);
+insert into course values ('CRS00010','N+',20);
+
+
+insert into Registration values('R201192100001','S201192100001','CRS00001','valid');
+insert into Registration values('R201192100002','S201192100002','CRS00002','valid');
+insert into Registration values('R201192100003','S201192100003','CRS00003','valid');
+insert into Registration values('R201192100004','S201192100004','CRS00004','valid');
+insert into Registration values('R201192100005','S201192100005','CRS00005','valid');
+insert into Registration values('R201192100006','S201192100006','CRS00006','valid');
+insert into Registration values('R201192100007','S201192100007','CRS00007','valid');
+insert into Registration values('R201192100008','S201192100008','CRS00008','valid');
+insert into Registration values('R201192100009','S201192100009','CRS00009','valid');
+insert into Registration values('R201192100010','S201192100010','CRS00010','valid');
+
+insert into Registration values('R201192100011','S201192100011','CRS00001','valid');
+insert into Registration values('R201192100012','S201192100012','CRS00001','valid');
+insert into Registration values('R201192100013','S201192100013','CRS00001','valid');
+insert into Registration values('R201192100014','S201192100014','CRS00001','valid');
+insert into Registration values('R201192100015','S201192100015','CRS00001','valid');
+insert into Registration values('R201192100016','S201192100016','CRS00001','valid');
+insert into Registration values('R201192100017','S201192100017','CRS00001','valid');
+insert into Registration values('R201192100018','S201192100018','CRS00001','valid');
+insert into Registration values('R201192100019','S201192100019','CRS00001','valid');
+insert into Registration values('R201192100020','S201192100020','CRS00001','valid');
+
+insert into Registration values('R201192100021','S201192100011','CRS00002','valid');
+insert into Registration values('R201192100022','S201192100012','CRS00002','valid');
+insert into Registration values('R201192100023','S201192100013','CRS00002','valid');
+insert into Registration values('R201192100024','S201192100014','CRS00002','valid');
+insert into Registration values('R201192100025','S201192100015','CRS00002','valid');
+insert into Registration values('R201192100026','S201192100016','CRS00002','valid');
+insert into Registration values('R201192100027','S201192100017','CRS00002','valid');
+insert into Registration values('R201192100028','S201192100018','CRS00002','valid');
+insert into Registration values('R201192100029','S201192100019','CRS00002','valid');
+insert into Registration values('R201192100030','S201192100020','CRS00002','valid');
+
+insert into batch values('B200001','CRS00001','new');
+insert into batch values('B200002','CRS00002','new');
+insert into batch values('B200003','CRS00003','new');
+insert into batch values('B200004','CRS00004','new');
+insert into batch values('B200005','CRS00005','new');
+insert into batch values('B200006','CRS00006','new');
+insert into batch values('B200007','CRS00007','new');
+insert into batch values('B200008','CRS00008','new');
+insert into batch values('B200009','CRS00009','new');
+insert into batch values('B200010','CRS00010','new');
+
+
+insert into Batch_Schedule_Students values ('BTCHSCH00001','R201192100001','CRS00001','B200001',1,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00002','R201192100011','CRS00001','B200001',1,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00003','R201192100012','CRS00001','B200001',1,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00004','R201192100013','CRS00001','B200001',1,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00005','R201192100014','CRS00001','B200001',1,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00006','R201192100015','CRS00001','B200001',1,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00007','R201192100016','CRS00001','B200001',1,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00008','R201192100017','CRS00001','B200001',1,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00009','R201192100018','CRS00001','B200001',1,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00010','R201192100019','CRS00001','B200001',1,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00011','R201192100020','CRS00001','B200001',1,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00012','R201192100001','CRS00001','B200001',2,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00013','R201192100011','CRS00001','B200001',2,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00014','R201192100012','CRS00001','B200001',2,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00015','R201192100013','CRS00001','B200001',2,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00016','R201192100014','CRS00001','B200001',2,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00017','R201192100015','CRS00001','B200001',2,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00018','R201192100016','CRS00001','B200001',2,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00019','R201192100017','CRS00001','B200001',2,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00020','R201192100018','CRS00001','B200001',2,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00021','R201192100019','CRS00001','B200001',2,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00022','R201192100020','CRS00001','B200001',2,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00023','R201192100001','CRS00001','B200001',3,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00024','R201192100011','CRS00001','B200001',3,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00025','R201192100012','CRS00001','B200001',3,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00026','R201192100013','CRS00001','B200001',3,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00027','R201192100014','CRS00001','B200001',3,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00028','R201192100015','CRS00001','B200001',3,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00029','R201192100016','CRS00001','B200001',3,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00030','R201192100017','CRS00001','B200001',3,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00031','R201192100018','CRS00001','B200001',3,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00032','R201192100019','CRS00001','B200001',3,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00033','R201192100020','CRS00001','B200001',3,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00034','R201192100001','CRS00001','B200001',4,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00035','R201192100011','CRS00001','B200001',4,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00036','R201192100012','CRS00001','B200001',4,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00037','R201192100013','CRS00001','B200001',4,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00038','R201192100014','CRS00001','B200001',4,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00039','R201192100015','CRS00001','B200001',4,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00040','R201192100016','CRS00001','B200001',4,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00041','R201192100017','CRS00001','B200001',4,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00042','R201192100018','CRS00001','B200001',4,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00043','R201192100019','CRS00001','B200001',4,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00044','R201192100020','CRS00001','B200001',4,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00045','R201192100001','CRS00001','B200001',5,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00046','R201192100011','CRS00001','B200001',5,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00047','R201192100012','CRS00001','B200001',5,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00048','R201192100013','CRS00001','B200001',5,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00049','R201192100014','CRS00001','B200001',5,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00050','R201192100015','CRS00001','B200001',5,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00051','R201192100016','CRS00001','B200001',5,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00052','R201192100017','CRS00001','B200001',5,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00053','R201192100018','CRS00001','B200001',5,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00054','R201192100019','CRS00001','B200001',5,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00055','R201192100020','CRS00001','B200001',5,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00056','R201192100001','CRS00001','B200001',6,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00057','R201192100011','CRS00001','B200001',6,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00058','R201192100012','CRS00001','B200001',6,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00059','R201192100013','CRS00001','B200001',6,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00060','R201192100014','CRS00001','B200001',6,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00061','R201192100015','CRS00001','B200001',6,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00062','R201192100016','CRS00001','B200001',6,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00063','R201192100017','CRS00001','B200001',6,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00064','R201192100018','CRS00001','B200001',6,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00065','R201192100019','CRS00001','B200001',6,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00066','R201192100020','CRS00001','B200001',6,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00067','R201192100001','CRS00001','B200001',7,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00068','R201192100011','CRS00001','B200001',7,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00069','R201192100012','CRS00001','B200001',7,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00070','R201192100013','CRS00001','B200001',7,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00071','R201192100014','CRS00001','B200001',7,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00072','R201192100015','CRS00001','B200001',7,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00073','R201192100016','CRS00001','B200001',7,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00074','R201192100017','CRS00001','B200001',7,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00075','R201192100018','CRS00001','B200001',7,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00076','R201192100019','CRS00001','B200001',7,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00077','R201192100020','CRS00001','B200001',7,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00078','R201192100001','CRS00001','B200001',8,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00079','R201192100011','CRS00001','B200001',8,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00080','R201192100012','CRS00001','B200001',8,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00081','R201192100013','CRS00001','B200001',8,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00082','R201192100014','CRS00001','B200001',8,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00083','R201192100015','CRS00001','B200001',8,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00084','R201192100016','CRS00001','B200001',8,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00085','R201192100017','CRS00001','B200001',8,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00086','R201192100018','CRS00001','B200001',8,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00087','R201192100019','CRS00001','B200001',8,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00088','R201192100020','CRS00001','B200001',8,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00089','R201192100001','CRS00001','B200001',9,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00090','R201192100011','CRS00001','B200001',9,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00091','R201192100012','CRS00001','B200001',9,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00092','R201192100013','CRS00001','B200001',9,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00093','R201192100014','CRS00001','B200001',9,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00094','R201192100015','CRS00001','B200001',9,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00095','R201192100016','CRS00001','B200001',9,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00096','R201192100017','CRS00001','B200001',9,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00097','R201192100018','CRS00001','B200001',9,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00098','R201192100019','CRS00001','B200001',9,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00099','R201192100020','CRS00001','B200001',9,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00100','R201192100001','CRS00001','B200001',10,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00101','R201192100011','CRS00001','B200001',10,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00102','R201192100012','CRS00001','B200001',10,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00103','R201192100013','CRS00001','B200001',10,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00104','R201192100014','CRS00001','B200001',10,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00105','R201192100015','CRS00001','B200001',10,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00106','R201192100016','CRS00001','B200001',10,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00107','R201192100017','CRS00001','B200001',10,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00108','R201192100018','CRS00001','B200001',10,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00109','R201192100019','CRS00001','B200001',10,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00110','R201192100020','CRS00001','B200001',10,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00111','R201192100001','CRS00001','B200001',11,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00112','R201192100011','CRS00001','B200001',11,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00113','R201192100012','CRS00001','B200001',11,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00114','R201192100013','CRS00001','B200001',11,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00115','R201192100014','CRS00001','B200001',11,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00116','R201192100015','CRS00001','B200001',11,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00117','R201192100016','CRS00001','B200001',11,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00118','R201192100017','CRS00001','B200001',11,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00119','R201192100018','CRS00001','B200001',11,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00120','R201192100019','CRS00001','B200001',11,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00121','R201192100020','CRS00001','B200001',11,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00122','R201192100001','CRS00001','B200001',12,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00123','R201192100011','CRS00001','B200001',12,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00124','R201192100012','CRS00001','B200001',12,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00125','R201192100013','CRS00001','B200001',12,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00126','R201192100014','CRS00001','B200001',12,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00127','R201192100015','CRS00001','B200001',12,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00128','R201192100016','CRS00001','B200001',12,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00129','R201192100017','CRS00001','B200001',12,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00130','R201192100018','CRS00001','B200001',12,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00131','R201192100019','CRS00001','B200001',12,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00132','R201192100020','CRS00001','B200001',12,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00133','R201192100001','CRS00001','B200001',13,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00134','R201192100011','CRS00001','B200001',13,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00135','R201192100012','CRS00001','B200001',13,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00136','R201192100013','CRS00001','B200001',13,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00137','R201192100014','CRS00001','B200001',13,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00138','R201192100015','CRS00001','B200001',13,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00139','R201192100016','CRS00001','B200001',13,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00140','R201192100017','CRS00001','B200001',13,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00141','R201192100018','CRS00001','B200001',13,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00142','R201192100019','CRS00001','B200001',13,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00143','R201192100020','CRS00001','B200001',13,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00144','R201192100001','CRS00001','B200001',14,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00145','R201192100011','CRS00001','B200001',14,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00146','R201192100012','CRS00001','B200001',14,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00147','R201192100013','CRS00001','B200001',14,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00148','R201192100014','CRS00001','B200001',14,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00149','R201192100015','CRS00001','B200001',14,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00150','R201192100016','CRS00001','B200001',14,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00151','R201192100017','CRS00001','B200001',14,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00152','R201192100018','CRS00001','B200001',14,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00153','R201192100019','CRS00001','B200001',14,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00154','R201192100020','CRS00001','B200001',14,'pending');
+
+insert into Batch_Schedule_Students values ('BTCHSCH00155','R201192100001','CRS00001','B200001',15,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00156','R201192100011','CRS00001','B200001',15,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00157','R201192100012','CRS00001','B200001',15,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00158','R201192100013','CRS00001','B200001',15,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00159','R201192100014','CRS00001','B200001',15,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00160','R201192100015','CRS00001','B200001',15,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00161','R201192100016','CRS00001','B200001',15,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00162','R201192100017','CRS00001','B200001',15,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00163','R201192100018','CRS00001','B200001',15,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00164','R201192100019','CRS00001','B200001',15,'pending');
+insert into Batch_Schedule_Students values ('BTCHSCH00165','R201192100020','CRS00001','B200001',15,'pending');
+
+

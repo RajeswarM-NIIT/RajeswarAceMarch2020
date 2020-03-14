@@ -1,0 +1,8 @@
+127.0.0.1 - - [13/Mar/2020:23:23:57 +0530] "GET / HTTP/1.1" 404 1074
+0:0:0:0:0:0:0:1 - - [13/Mar/2020:23:23:58 +0530] "GET /attendance/ HTTP/1.1" 200 221
+0:0:0:0:0:0:0:1 - - [13/Mar/2020:23:24:09 +0530] "GET /attendance/ HTTP/1.1" 200 221
+0:0:0:0:0:0:0:1 - - [13/Mar/2020:23:24:12 +0530] "GET /attendance/reqGLPage HTTP/1.1" 200 217
+0:0:0:0:0:0:0:1 - - [13/Mar/2020:23:24:21 +0530] "GET /attendance/reqFacPage HTTP/1.1" 200 386
+0:0:0:0:0:0:0:1 - - [13/Mar/2020:23:24:25 +0530] "POST /attendance/reqGetAttendancePage HTTP/1.1" 200 18319
+0:0:0:0:0:0:0:1 - - [13/Mar/2020:23:59:33 +0530] "GET /attendance/reqFacPage HTTP/1.1" 200 386
+0:0:0:0:0:0:0:1 - - [13/Mar/2020:23:59:37 +0530] "POST /attendance/reqGetAttendancePage HTTP/1.1" 200 18319

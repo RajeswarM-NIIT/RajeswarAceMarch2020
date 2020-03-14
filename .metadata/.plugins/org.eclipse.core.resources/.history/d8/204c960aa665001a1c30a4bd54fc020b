@@ -1,0 +1,89 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+  
+
+<%@ include file = "links.jsp" %>
+
+<script>
+	$(document).ready(
+			function() {
+				var searchCondition = '${searchCondition}';
+				$('.table').DataTable(
+						{
+							"lengthMenu" : [ [ 20, 40,60, -1 ],
+									[ "Twenty", "Forty", "Sixty", "All" ] ],
+							"oSearch" : {"sSearch" : searchCondition
+							}
+						})
+			});
+</script>
+
+	<style>
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #bfd7ff;
+ }
+ .table-striped>tbody>tr:nth-child(even)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #c7fccd;
+ }
+</style>
+</head>
+<body>
+
+<%@ include file = "navbar.jsp" %>
+<div class="container" style="background-color:#c0fae6; margin-top:50px; padding-top:50px; padding-bottom:50px">
+	
+<form action="reqStudentReportPage" method="post">
+	<input type="submit" value="Get studentwise data"/>
+</form>
+<form action="reqBatchReportPage" method="post">
+	<input type="submit" value="Get batchwise data"/>
+</form>
+</div>
+
+<div class="container" style="background-color:#c0fae6">
+			<div class="col-sm-12">
+				<table class="table table-striped fixed_headers table-hover" id="tablesortsearch">
+				
+					<thead>
+						<tr>
+							<th style="text-align:center">Student ID <br> Reg. No.</th>
+							<th style="text-align:center">Student name</th>
+							<th style="text-align:center">Course <br> Batch code</th>
+							<th style="text-align:center">#Sessions</th>
+							<th style="text-align:center">#Attended</th>	
+							<th style="text-align:center">Attendance %</th>														
+						</tr>
+					</thead>
+					
+					<tbody style="text-align:center">
+						<c:forEach items="${presentdata}" var="p">
+							<tr>								
+								<td>${p.stid} <br> ${p.regid}</td>
+								<td>${p.stname}</td>
+								<td>${p.crsname} <br> ${p.batchid}</td>
+								<td>${p.nosessions}</td>
+								<td>${p.presents}</td>								
+								<td>
+								<fmt:formatNumber type = "number" 
+         maxFractionDigits = "3" value = "${(p.presents/p.nosessions)*100}" />
+								
+								</td>								
+							</tr>
+						</c:forEach>
+					
+					
+					
+					
+					</tbody>				
+				</table>
+			</div>
+		</div>
+		${presentdata}
+</body>
+
+</html>

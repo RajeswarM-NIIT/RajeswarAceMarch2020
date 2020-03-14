@@ -1,0 +1,73 @@
+package com.ace.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.ace.dao.AttDataDAO;
+import com.ace.dao.FacultyDAOInt;
+import com.ace.model.Vw_Att_Absent;
+import com.ace.model.Vw_Att_Present;
+
+@Controller
+public class ChController {
+	@Autowired
+	private FacultyDAOInt facdao;
+	
+	
+	@RequestMapping(value= {"/reqCHPage","/reqAttPresPage"})
+	public String displaycHPage(Model m) {
+		AttDataDAO attdao = new AttDataDAO();
+		List<Vw_Att_Present> data = attdao.getPresentData();
+		float totalpercentage=0;
+		for(Vw_Att_Present v: data) {
+			totalpercentage += v.getPresents();
+		}
+		//totalpercentage=totalpercentage/data.size();
+		m.addAttribute("totalpercentage", totalpercentage);
+		m.addAttribute("presentdata", data);
+		return "chpage-student-att-pres";
+	}
+
+	@RequestMapping("/reqAttAbsPage")
+	public String displaycHPage1(Model m) {
+		AttDataDAO attdao = new AttDataDAO();
+		List<Vw_Att_Absent> data = attdao.getAbsentData();
+		m.addAttribute("absentdata", data);
+		System.out.println(data);
+		return "chpage-student-att-abs";
+	}
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+public String displaycHPage(Model m) {
+AttDataDAO attdao = new AttDataDAO();
+
+List<Vw_Att_Present> data = facdao.getPresentData();
+System.out.println(data);
+System.out.println(data.size());
+for(Vw_Att_Present v:data) {
+	System.out.println(v.getStid());
+}
+m.addAttribute("presentdata", data);
+return "chpage";
+}
+*/

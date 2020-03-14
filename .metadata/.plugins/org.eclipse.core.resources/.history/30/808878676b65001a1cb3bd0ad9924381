@@ -1,0 +1,61 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<%@ include file = "links.jsp" %>
+</head>
+<body>
+
+<%@ include file = "navbar.jsp" %>
+<div class="container" style="background-color:#96ffda; margin-top:50px">
+Attendance screen
+	<div class="row" style="font-style:bold; font-size:15px">
+		<strong>
+			<div class="col-sm-1">Batch Code</div>
+			<div class="col-sm-2">Reg. No. <br> Student ID</div>
+			<div class="col-sm-2">Student Name</div>
+			<div class="col-sm-2">Program</div>
+			<div class="col-sm-2">Session No.</div>
+			<div class="col-sm-3">Att. Status</div>
+		</strong>
+	</div>
+	<hr>
+	<spring:form modelAttribute="form"  action="reqMarkAttendance" method="post">
+		<c:forEach items="${form.studentrecords}" var="st" varStatus="vs">		
+		 	<spring:hidden path="studentrecords[${vs.index}].batchid"/> 
+		 	<spring:hidden path="studentrecords[${vs.index}].crsid"/> 	 	
+			<spring:hidden path="studentrecords[${vs.index}].crsname"/>
+			<spring:hidden path="studentrecords[${vs.index}].nosessions"/>		
+			<spring:hidden path="studentrecords[${vs.index}].status"/>
+			<spring:hidden path="studentrecords[${vs.index}].batchschstid"/>
+			<spring:hidden path="studentrecords[${vs.index}].sessionno"/>
+			<spring:hidden path="studentrecords[${vs.index}].batchschedulestudentsstatus"/>
+			<spring:hidden path="studentrecords[${vs.index}].regid"/>
+			<spring:hidden path="studentrecords[${vs.index}].studentstatus"/>
+			<spring:hidden path="studentrecords[${vs.index}].stid"/>
+			<spring:hidden path="studentrecords[${vs.index}].stname"/>	
+			<div class="row" style="font-size:20px">		
+				<div class="col-sm-1">${st.batchid}</div>
+				<div class="col-sm-2">${st.regid}<br>${st.stid}</div> 
+				<div class="col-sm-2">${st.stname}</div>
+				<div class="col-sm-2">${st.crsname}</div>
+				<div class="col-sm-2">${st.sessionno}</div>
+				<div class="col-sm-3">
+					<div class="col-sm-6">
+						<spring:radiobutton path="studentrecords[${vs.index}].attst" value="Present" checked="true"/>Present
+					</div>
+					<div class="col-sm-6">
+						<spring:radiobutton path="studentrecords[${vs.index}].attst" value="Absent" />Absent
+					</div>
+				</div>
+			</div>
+			<%-- <spring:checkbox path="${st.attst}" checked="true" value="Present"/> --%>		
+			<hr>	
+		</c:forEach>
+		<spring:button>Mart Attendance</spring:button>
+</spring:form>
+
+</div>
+</body>
+</html>

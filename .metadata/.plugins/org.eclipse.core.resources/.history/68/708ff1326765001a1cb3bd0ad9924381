@@ -1,0 +1,20 @@
+<html>
+<head>
+
+<%@ include file = "links.jsp" %>
+</head>
+<body>
+<div class="container">
+<%@ include file = "navbar.jsp" %>
+  </div>
+  
+This is homepage from controller
+<br>
+<a href="reqGLPage">GL Page</a>
+<br>
+<a href="reqFacPage">Faculty Page</a>
+<br>
+<a href="reqCHPage">Center Head Page</a>
+
+</body>
+</html>

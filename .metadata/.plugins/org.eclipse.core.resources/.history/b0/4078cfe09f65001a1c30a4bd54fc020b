@@ -1,0 +1,26 @@
+package com.ace.dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.List;
+
+import com.ace.model.Vw_Att_Present;
+
+public class AttDataDAO {
+
+	public List<Vw_Att_Present> getPresentData() {
+		try {
+			Class.forName("org.h2.Driver");
+			Connection con = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/Ace-Project2019-Nov","sa","");
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+}

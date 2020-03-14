@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;attendance/src/main/webapp/WEB-INF/views/chpage.jsp&apos; to &apos;chpage-student-att-pres.jsp&apos;" description="Rename resource &apos;chpage.jsp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/webapp/WEB-INF/views/chpage.jsp" name="chpage-student-att-pres.jsp" stamp="1584161966200" updateReferences="true"/>
+</session>

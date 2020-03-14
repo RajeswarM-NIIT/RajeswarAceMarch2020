@@ -1,0 +1,44 @@
+package com.ace.dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ace.model.Vw_Att_Present;
+
+public class AttDataDAO {
+
+	public List<Vw_Att_Present> getPresentData() {
+		List<Vw_Att_Present> data = new ArrayList<Vw_Att_Present>();
+		try {
+			Class.forName("org.h2.Driver");
+			Connection con = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/Ace-Project2019-Nov","sa","");
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from Vw_Att_Present");
+			while(rs.next()) {
+				Vw_Att_Present vw = new Vw_Att_Present();
+				vw.setStid(rs.getString(1));
+				vw.setRegid(rs.getString(2));
+				vw.setStname(rs.getString(3));
+				vw.setCrsid(rs.getString(4));
+				vw.setCrsname(rs.getString(5));
+				vw.setBatchid(rs.getString(6));
+				vw.setNosessions(rs.getInt(7));
+				vw.setPresents(rs.getInt(8));
+				data.add(vw);
+			}
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return data;
+	}
+}

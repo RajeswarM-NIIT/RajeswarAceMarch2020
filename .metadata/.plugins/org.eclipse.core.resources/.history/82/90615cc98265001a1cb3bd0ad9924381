@@ -1,0 +1,21 @@
+package com.ace.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.ace.dao.FacultyDAOInt;
+
+@Controller
+public class ChController {
+	@Autowired
+	private FacultyDAOInt facdao;
+	
+	
+	@RequestMapping("/reqCHPage")
+	public String displaycHPage() {
+		List<Vw_Att_Present> data = facdao.getPresentData();
+		System.out.println(data);
+		return "chpage";
+	}
+}
